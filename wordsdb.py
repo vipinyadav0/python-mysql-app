@@ -4,7 +4,9 @@ import re
 conn = mysql.connector.connect(
     host = "localhost",
     user = "root",
-    password = "adminadmin"
+    password = "adminadmin",
+    database = "vocab"
+
 )
 
 cursor = conn.cursor()
@@ -24,6 +26,13 @@ for db in cursor:
 if (not found):
     cursor.execute('CREATE DATABASE vocab')
 
+sql = "DROP TABLE IF EXISTS vocab_table"
+cursor.execute(sql)
+
+sql = "CREATE TABLE vocab_table(word VARCHAR(225), definition VARCHAR(255)"
+cursor.execute(sql)
+
+
 fh = open("Vocabulary_list.csv", "r")
 
 wd_list = fh.readlines()
@@ -39,4 +48,14 @@ for rawstring in wd_list:
 
     vocab_list.append({word, definition})
 
-# print(vocab_list)
+    sql = "INSERT INTO vocab_table(word, definition) VALUES(%s, %s)"
+
+    values = (word,definition)
+    cursor.execute(sql, values)
+
+    conn.commit()
+    print("Inserted " + str(cursor.rowcounts) + "row into vocab_table")
+
+# print(vocab_list) 
+
+
