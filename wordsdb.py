@@ -29,7 +29,7 @@ if (not found):
 sql = "DROP TABLE IF EXISTS vocab_table"
 cursor.execute(sql)
 
-sql = "CREATE TABLE vocab_table(word VARCHAR(225), definition VARCHAR(255)"
+sql = "CREATE TABLE vocab_table(word VARCHAR(225), definition VARCHAR(255))"
 cursor.execute(sql)
 
 
@@ -54,7 +54,7 @@ for rawstring in wd_list:
     cursor.execute(sql, values)
 
     conn.commit()
-    print("Inserted " + str(cursor.rowcounts) + "row into vocab_table")
+    print("Inserted " + str(cursor.rowcount) + "row into vocab_table")
 
 
 # Retrieving Data from the MySql Table using select query
@@ -70,7 +70,7 @@ for row in result:
 sql = "SELECT * from vocab_table WHERE word = %s"
 
 value = ('boisterous',)
-cursor.execute(sql)
+cursor.execute(sql, value)
 
 result = cursor.fetchall()
 # Iterating through results set
@@ -78,10 +78,17 @@ result = cursor.fetchall()
 for row in result:
     print(row)
 
+# Changing MySql Table Entry using Update
 
+sql = "UPDATE vocab_table SET definition = %s WHERE word = %s"
 
+value = ("spirited; lively", 'boisterous')
 
+cursor.execute(sql, value)
 
+conn.commit()
+
+print("Modified row count: ", cursor.rowcount)
 
 
 # print(vocab_list) 
