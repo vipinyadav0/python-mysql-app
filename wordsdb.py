@@ -56,6 +56,34 @@ for rawstring in wd_list:
     conn.commit()
     print("Inserted " + str(cursor.rowcounts) + "row into vocab_table")
 
+
+# Retrieving Data from the MySql Table using select query
+sql = "SELECT * from vocab_table" 
+cursor.execute(sql)
+
+result = cursor.fetchall()
+# Iterating through results set
+
+for row in result:
+    print(row)
+
+sql = "SELECT * from vocab_table WHERE word = %s"
+
+value = ('boisterous',)
+cursor.execute(sql)
+
+result = cursor.fetchall()
+# Iterating through results set
+
+for row in result:
+    print(row)
+
+
+
+
+
+
+
 # print(vocab_list) 
 
 
